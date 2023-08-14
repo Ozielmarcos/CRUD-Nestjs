@@ -13,9 +13,9 @@ export class UserService {
   ) {}
 
   async createUser(user: UserDto) {
-    const userEnity = new UserEntity(user.id, user.email, this.hashPassword(user.password))
+    const userEntity = new UserEntity(user.id, user.email, this.hashPassword(user.password))
 
-    await this.userRepository.save(userEnity)
+    await this.userRepository.save(userEntity)
   }
 
   async findAll() {
@@ -28,7 +28,7 @@ export class UserService {
   async findOne(userEntity: FindOptionsWhere<UserEntity>): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
       where: userEntity,
-      select: ['id', 'email', 'password'],
+      select: ['id', 'email'],
     })
     if (user) return user
     else throw new NotFoundException('Usuário não encontrado')
@@ -42,7 +42,7 @@ export class UserService {
   }
 
   async remove(id: number) {
-    const user = this.findOne({ id })
+    this.findOne({ id })
     await this.userRepository.delete({ id })
   }
 
